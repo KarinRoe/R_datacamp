@@ -1,0 +1,77 @@
+---
+title: "Importing data in R"
+output: html_notebook
+---
+## read.csv
+
+To list the files in the working directory type dir().
+read.csv to read csv files into R
+
+```{r}
+salary <- read.csv("monthly_salary_brazil.csv")
+str(salary)
+```
+```{r}
+salary2 <- read.csv("monthly_salary_brazil.csv", stringsAsFactors = FALSE)
+str(salary2)
+```
+
+## read.delim
+
+Aside from .csv files, there are also the .txt files which are basically text files. You can import these functions with read.delim(). By default, it sets the sep argument to "\t" (fields in a record are delimited by tabs) and the header argument to TRUE (the first row contains the field names). 
+
+## read.table
+
+If you're dealing with more exotic flat file formats, you'll want to use read.table(). It's the most basic importing function; you can specify tons of different arguments in this function. Unlike read.csv() and read.delim(), the header argument defaults to FALSE and the sep argument is "" by default.
+
+If the file is in a folder in your working directory use file.path("data", "hotdogs.txt")
+
+which.min(), returns the index the smallest value in a vector.
+which.max(), returns the index the highest value in a vector.
+
+## Column classes
+
+sets the classes when loading in: 
+colClasses = c("character", "numeric", "logical")
+
+If a column is set to "NULL" in the colClasses vector, this column will be skipped and will not be loaded into the data frame.
+
+## read.csv2 and read.delim2
+
+are for files form countries who use "," to seperate numbers instead of "."
+
+# readr package
+
+Files loaded with readr package are in tibbel format
+
+read_tsv() to easily read in TSV files. TSV is short for tab-separated values.
+
+```{r message=FALSE, warning=FALSE}
+library(readr)
+head(read_csv("monthly_salary_brazil.csv"))
+```
+
+## read_delim
+
+read_delim() takes two mandatory arguments:
+
+    file: the file that contains the data
+    delim: the character that separates the values in the data file
+
+
+## skip and n_max
+
+Through skip and n_max you can control which part of your flat file you're actually importing into R.
+
+    skip specifies the number of lines you're ignoring in the flat file before actually starting to import data.
+    n_max specifies the number of lines you're actually importing.
+
+Say for example you have a CSV file with 20 lines, and set skip = 2 and n_max = 3, you're only reading in lines 3, 4 and 5 of the file.
+Watch out: Once you skip some lines, you also skip the first line that can contain column names!
+
+## col_types
+
+You can also specify which types the columns in your imported data frame should have. You can do this with col_types. If set to NULL, the default, functions from the readr package will try to find the correct types themselves. You can manually set the types with a string, where each character denotes the class of the column: character, double, integer and logical. _ skips the column as a whole.
+
+
+
