@@ -73,5 +73,46 @@ Watch out: Once you skip some lines, you also skip the first line that can conta
 
 You can also specify which types the columns in your imported data frame should have. You can do this with col_types. If set to NULL, the default, functions from the readr package will try to find the correct types themselves. You can manually set the types with a string, where each character denotes the class of the column: character, double, integer and logical. _ skips the column as a whole.
 
+## col_types with collectors
+
+Another way of setting the types of the imported columns is using collectors. Collector functions can be passed in a list() to the col_types argument of read_ functions to tell them how to interpret values in a column.
+
+For a complete list of collector functions, you can take a look at the collector documentation. For this exercise you will need two collector functions:
+
+    col_integer(): the column should be interpreted as an integer.
+    col_factor(levels, ordered = FALSE): the column should be interpreted as a factor with levels.
+
+hotdogs_factor <- read_tsv("hotdogs.txt",
+                           col_names = c("type", "calories", "sodium"),
+                           col_types = list(fac, int, int))
+                           
+# data.table
+
+## fread()
+fread is similar than read.table, but much faster.
 
 
+drop and select, to drop or select variables of interest.
+
+Suppose you have a dataset that contains 5 variables and you want to keep the first and fifth variable, named "a" and "e". 
+
+  fread("path/to/file.txt", drop = 2:4)
+  fread("path/to/file.txt", select = c(1, 5))
+  fread("path/to/file.txt", drop = c("b", "c", "d"))
+  fread("path/to/file.txt", select = c("a", "e"))
+
+# readxl package
+
+Before you can start importing from Excel, you should find out which sheets are available in the workbook. You can use the excel_sheets() function for this.
+
+Now that you know the names of the sheets in the Excel file you want to import, it is time to import those sheets into R. You can do this with the read_excel() function. Have a look at this recipe:
+
+  data <- read_excel("data.xlsx", sheet = "my_sheet")
+
+This call simply imports the sheet with the name "my_sheet" from the "data.xlsx" file. You can also pass a number to the sheet argument; this will cause read_excel() to import the sheet with the given sheet number. sheet = 1 will import the first sheet, sheet = 2 will import the second sheet, and so on.
+
+## Reading a workbook
+
+Loading in every sheet manually and then merging them in a list can be quite tedius but it can be automated with lapply().
+
+Other packages working with gdata and xlconnect
